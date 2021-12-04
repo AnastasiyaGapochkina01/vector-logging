@@ -1,0 +1,41 @@
+---
+- name: Run zookeeper
+  docker_container:
+    name: zookeeper
+    image: zookeeper:latest
+    state: started
+    recreate: yes
+    env:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    published_ports:
+      - '22181:2181'
+
+- name: Create build directory
+  file:
+    path: /opt/kafka
+    state: directory
+    mode: 0755
+
+- name: Copy Dockerfile
+  copy:
+    src: Dockerfile
+    dest: /opt/kafka
+    mode: 0644
+
+- name: Build kafka image
+  command: docker build -t kafka:latest /opt/kafka
+
+- name: Run kafka
+  docker_container:
+    name: kafka
+    image: kafka:latest 
+    state: started
+    recreate: yes
+    env:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: 172.17.0.2:2181
+    published_ports:
+      - '29092:29092'
+    links:
+      - 'zookeeper:zookeeper'
