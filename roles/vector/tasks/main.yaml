@@ -1,0 +1,31 @@
+---
+- name: Create build directory
+  file:
+    path: /opt/vector
+    state: directory
+    mode: 0755
+
+- name: Copy Dockerfile
+  copy:
+    src: Dockerfile
+    dest: /opt/vector
+    mode: 0644
+
+- name: Build vector image
+  command: docker build -t vector:latest /opt/vector
+
+- name: Copy vector config
+  template:
+    src: vector.yaml.j2
+    dest: /opt/vector/vector.yaml
+  
+- name: Run vector container
+  docker_container:
+    name: vector
+    image: vector:latest
+    state: started
+    recreate: yes
+    published_ports:
+      - '8383:8383'
+    volumes:
+      - '/opt/vector/vector.yaml:/etc/vector/vector.yaml'
