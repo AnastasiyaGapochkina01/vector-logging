@@ -4,3 +4,4 @@
   roles:
     - install_docker
     - kafka
+    - vector

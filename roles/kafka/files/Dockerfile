@@ -12,8 +12,9 @@ RUN wget https://downloads.apache.org/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSI
 
 WORKDIR /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/bin
 #docker inspect zookeeper --format='{{ .NetworkSettings.IPAddress }}' 
-# КОСТЫЛЬ! переделать под net = host или что-то такое
-RUN sed -i 's/zookeeper.connect=localhost:2181/zookeeper.connect=172.17.0.2:2181/g' ../config/server.properties 
+# КОСТЫЛЬ! переделать под net = host или что-то такое + env
+RUN sed -i 's/zookeeper.connect=localhost:2181/zookeeper.connect=172.17.0.2:2181/g' ../config/server.properties
+RUN sed -i '/advertised.listeners/s/^#//g' ../config/server.properties
+RUN sed -i 's/your.host.name:9092/172.17.0.3:9092/g' ../config/server.properties
 
-#CMD ["/opt/kafka/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/bin/kafka-server-start.sh"]
 CMD ["./kafka-server-start.sh", "../config/server.properties"]

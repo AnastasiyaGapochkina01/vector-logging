@@ -16,8 +16,8 @@
 
 - name: Copy vector config
   template:
-    src: vector.yaml.j2
-    dest: /opt/vector/vector.yaml
+    src: vector.toml.j2
+    dest: /opt/vector/vector.toml
   
 - name: Run vector container
   docker_container:
@@ -28,4 +28,4 @@
     published_ports:
       - '8383:8383'
     volumes:
-      - '/opt/vector/vector.yaml:/etc/vector/vector.yaml'
+      - '/opt/vector/vector.toml:/etc/vector/vector.toml'

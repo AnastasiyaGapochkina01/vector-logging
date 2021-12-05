@@ -1,0 +1,17 @@
+[sources.syslog_file]
+type = "file"
+ignore_older_secs = 600
+include = [ "/var/log/syslog" ]
+read_from = "beginning"
+
+[transforms.syslog_transform]
+type = "reduce"
+inputs = [ "syslog_file" ]
+
+[sinks.syslog_sink]
+type = "kafka"
+inputs = [ "syslog_file" ]
+bootstrap_servers = "172.17.0.3:9092"
+topic = "Vector"
+compression = "none"
+encoding = "text"
