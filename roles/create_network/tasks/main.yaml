@@ -1,0 +1,4 @@
+---
+- name: Create local network
+  docker_network:
+    name: logging
