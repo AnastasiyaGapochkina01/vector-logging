@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: Elasticsearch
+    type: elasticsearch
+    access: proxy
+    url: http://elastic:9200
+    database: kafka
+    jsonData:
+      esVersion: 7.0.0
+      includeFrozen: false
+      logLevelField: ""
+      logMessageField: message
+      maxConcurrentShardRequests: 5
+      timeField: '@timestamp'
