@@ -6,4 +6,5 @@
     - create_network
     - kafka
     - vector
+    - elastic
     
