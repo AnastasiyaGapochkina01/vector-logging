@@ -3,5 +3,7 @@
   become: true
   roles:
     - install_docker
+    - create_network
     - kafka
     - vector
+    

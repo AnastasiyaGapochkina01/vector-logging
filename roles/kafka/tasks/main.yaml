@@ -10,6 +10,8 @@
       ZOOKEEPER_TICK_TIME: 2000
     published_ports:
       - '22181:2181'
+    networks:
+    - name: logging
 
 - name: Create build directory
   file:
@@ -39,3 +41,5 @@
       - '29092:29092'
     links:
       - 'zookeeper:zookeeper'
+    networks:
+    - name: logging
