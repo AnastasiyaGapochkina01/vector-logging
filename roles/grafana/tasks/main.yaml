@@ -1,0 +1,27 @@
+---
+- name: Create grafana directory
+  file:
+    path: /opt/grafana
+    state: directory
+    mode: 0755
+
+- name: Copy grafana provisioning
+  copy:
+    src: datasources.yml
+    dest: /opt/grafana/datasources.yml
+    mode: 0644
+
+- name: Run grafana
+  docker_container:
+    name: grafana
+    image: grafana/grafana:8.3.2
+    state: started
+    recreate: yes
+    published_ports:
+      - '3000:3000'
+    env:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - "/opt/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml"
+    networks:
+    - name: logging
