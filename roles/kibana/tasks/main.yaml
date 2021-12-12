@@ -1,0 +1,27 @@
+---
+- name: Create kibana directory
+  file:
+    path: /opt/kibana
+    state: directory
+    mode: 0755
+
+- name: Copy config
+  copy:
+    src: kibana.yml
+    dest: /opt/kibana
+    mode: 0644
+
+- name: Run kibana
+  docker_container:
+    name: kibana
+    image: docker.elastic.co/kibana/kibana:7.16.0
+    state: started
+    recreate: yes
+    published_ports:
+      - '5601:5601'
+    env:
+      ELASTICSEARCH_HOSTS: "http://elastic:9200"
+    volumes:
+      - '/opt/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml'
+    networks:
+    - name: logging
