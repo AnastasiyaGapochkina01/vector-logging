@@ -1,0 +1,29 @@
+---
+- name: Run mongodb for graylog
+  docker_container:
+    name: mongodb
+    image: mongo:4.2
+    state: started
+    recreate: yes
+    published_ports:
+      - '27017:27017'
+    networks:
+      - name: logging
+
+- name: Run graylog
+  docker_container:
+    name: graylog
+    image: graylog/graylog:4.2
+    env:
+      GRAYLOG_PASSWORD_SECRET: 3FlFddrVeMz3L9JJcKhu
+      GRAYLOG_ROOT_PASSWORD_SHA2: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'
+      GRAYLOG_HTTP_EXTERNAL_URI: 'http://192.168.56.25:9000/'
+      GRAYLOG_MONGODB_URI: 'mongodb://mongodb/graylog'
+    published_ports:
+      - '9000:9000'
+      - '1514:1514'
+      - '1514:1514/udp'
+      - '12201:12201'
+      - '12201:12201/udp'
+    networks:
+      - name: logging

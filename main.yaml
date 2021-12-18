@@ -7,5 +7,5 @@
     - kafka
     - vector
     - elastic
-    - kibana
+    - graylog
     
