@@ -59,3 +59,23 @@
 
 ./kafka/bin/kafka-topics.sh --bootstrap-server "localhost:9092" --list |grep -w "${topic_name}"
 ```
+
+**mongodb**
+
+```
+use graylog
+db.inputs.find()
+```
+
+**vector**
+
+```
+pkill -HUP "^vector$"
+```
+
+**elasticsearch**
+
+```
+curl -X GET "localhost:9200/_cat/nodes?v&pretty"
+curl -s -X GET "localhost:9200/grafana_logs/_search" | jq .
+```
