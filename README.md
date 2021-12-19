@@ -47,3 +47,15 @@
 * **vector**
 
 Запускает контейнер с вектором (https://vector.dev/). Конфиги лежат в files/; собираются логи из файлов и docker logs. env DOCKER_HOST и volume /var/run/docker.sock нужны, чтобы вектор мог цепляться к логам докера на хосте.
+
+### Полезные команды
+
+**kafka**
+
+```
+./kafka-topics.sh --create --zookeeper 172.17.0.2:2181 --replication-factor 1 --partitions 1 --topic ${topic_name}
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${topic_name} --from-beginning
+
+./kafka/bin/kafka-topics.sh --bootstrap-server "localhost:9092" --list |grep -w "${topic_name}"
+```
