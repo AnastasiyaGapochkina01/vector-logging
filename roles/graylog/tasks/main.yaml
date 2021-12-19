@@ -9,6 +9,14 @@
       - '27017:27017'
     networks:
       - name: logging
+    volumes:
+      - '/opt/mongo-db:/data/db'
+
+- name: Copy backup script
+  copy:
+    src: mongodb_backup.sh
+    dest: /opt/mongo/mongodb_backup.sh
+    mode: 0755
 
 - name: Run graylog
   docker_container:
