@@ -1,0 +1,17 @@
+[sources.error_file]
+type = "file"
+ignore_older_secs = 600
+include = [ "/logs/grafana_error.log" ]
+read_from = "beginning"
+
+[transforms.error_transform]
+type = "reduce"
+inputs = [ "error_file" ]
+
+[sinks.error_sink]
+type = "kafka"
+inputs = [ "error_file" ]
+bootstrap_servers = "kafka:9092"
+topic = "nginx_error_log"
+compression = "none"
+encoding = "text"

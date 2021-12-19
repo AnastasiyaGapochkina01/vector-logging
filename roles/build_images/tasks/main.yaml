@@ -1,0 +1,15 @@
+---
+- name: Copy files to build
+  copy:
+    src: "{{ item }}/"
+    dest: /opt/build_{{ item }}
+    mode: 0755
+  with_items:
+    - kafka
+    - vector
+
+- name: Build image
+  command: docker build -t {{ item }}:latest /opt/build_{{ item }}
+  with_items:
+    - kafka
+    - vector

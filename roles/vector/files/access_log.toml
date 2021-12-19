@@ -1,0 +1,17 @@
+[sources.access_file]
+type = "file"
+ignore_older_secs = 600
+include = [ "/logs/grafana_access.log" ]
+read_from = "beginning"
+
+[transforms.access_transform]
+type = "reduce"
+inputs = [ "access_file" ]
+
+[sinks.access_sink]
+type = "kafka"
+inputs = [ "access_file" ]
+bootstrap_servers = "kafka:9092"
+topic = "nginx_access_log"
+compression = "none"
+encoding = "text"
