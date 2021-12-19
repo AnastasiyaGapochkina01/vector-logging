@@ -8,6 +8,4 @@ RUN curl \
   https://packages.timber.io/vector/0.18.0/vector-0.18.0-amd64.deb
 RUN dpkg -i vector-0.18.0-amd64.deb
 
-CMD ["/usr/bin/vector"]
-#, "--config", "/etc/vector/vector.yaml"]
-#ENTRYPOINT ["/usr/bin/vector --config /etc/vector/vector.yaml"]
+CMD ["/usr/bin/vector", "-c", "/etc/vector/*.toml"]

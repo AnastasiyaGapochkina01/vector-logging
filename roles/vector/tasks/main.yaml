@@ -1,34 +1,24 @@
 ---
-- name: Create build directory
-  file:
-    path: /opt/vector
-    state: directory
-    mode: 0755
-
-- name: Copy Dockerfile
-  copy:
-    src: Dockerfile
-    dest: /opt/vector
-    mode: 0644
-
-- name: Build vector image
-  command: docker build -t vector:latest /opt/vector
-
 - name: Copy vector config
-  template:
-    src: vector.toml.j2
-    dest: /opt/vector/vector.toml
-  
+  copy:
+    src: "{{ item }}"
+    dest: /opt/vector
+  with_fileglob:
+    - "*.toml"
+
 - name: Run vector container
   docker_container:
     name: vector
     image: vector:latest
     state: started
     recreate: yes
+    env:
+      DOCKER_HOST: unix:///var/run/docker.sock
     published_ports:
       - '8383:8383'
     volumes:
-      - '/opt/vector/vector.toml:/etc/vector/vector.toml'
-      - '/opt/vector/syslog:/var/log/syslog'
+      - '/opt/vector/:/etc/vector/'
+      - '/opt/logs/:/logs/'
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
     - name: logging

@@ -13,21 +13,6 @@
     networks:
     - name: logging
 
-- name: Create build directory
-  file:
-    path: /opt/kafka
-    state: directory
-    mode: 0755
-
-- name: Copy Dockerfile
-  copy:
-    src: Dockerfile
-    dest: /opt/kafka
-    mode: 0644
-
-- name: Build kafka image
-  command: docker build -t kafka:latest /opt/kafka
-
 - name: Run kafka
   docker_container:
     name: kafka
@@ -35,11 +20,16 @@
     state: started
     recreate: yes
     env:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_ZOOKEEPER_CONNECT: 172.17.0.2:2181
+      KAFKA_ZK_CONNECT: zookeeper:2181
+      KAFKA_PORT: 9092
+      KAFKA_ADV_LIST: kafka:9092
+      KAFKA_TOPIC: nginx_error_log nginx_access_log grafana_logs
     published_ports:
       - '29092:29092'
     links:
       - 'zookeeper:zookeeper'
     networks:
     - name: logging
+
+- name: Create kafka topics
+  shell: sleep 60 && docker exec kafka /opt/create_topic.sh

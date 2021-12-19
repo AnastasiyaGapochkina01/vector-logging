@@ -1,0 +1,23 @@
+---
+- name: Create logstash directory
+  file:
+    path: /opt/logstash
+    state: directory
+    mode: 0755
+
+- name: Copy logstash.conf
+  copy:
+    src: logstash.conf
+    dest: /opt/logstash/logstash.conf
+    mode: 0644
+
+- name: Run logstash
+  docker_container:
+    name: logstash
+    image: docker.elastic.co/logstash/logstash:7.16.0
+    state: started
+    recreate: yes
+    volumes:
+      - "/opt/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+    networks:
+    - name: logging

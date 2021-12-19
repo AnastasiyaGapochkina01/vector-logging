@@ -1,0 +1,16 @@
+[sources.grafana]
+type = "docker_logs"
+docker_host = "/var/run/docker.sock"
+include_containers = [ "grafana" ]
+
+[transforms.grafana_transform]
+type = "reduce"
+inputs = [ "grafana" ]
+
+[sinks.grafana_sink]
+type = "kafka"
+inputs = [ "grafana" ]
+bootstrap_servers = "kafka:9092"
+topic = "grafana_logs"
+compression = "none"
+encoding = "text"
