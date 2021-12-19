@@ -46,4 +46,4 @@
 
 * **vector**
 
-Запускает контейнер с вектором (https://vector.dev/). Конифги лежат в files/; собираются логи из файлов и docker logs. env DOCKER_HOST и volume /var/run/docker.sock нужны, чтобы вектор мог цепляться к логам докера на хосте.
+Запускает контейнер с вектором (https://vector.dev/). Конфиги лежат в files/; собираются логи из файлов и docker logs. env DOCKER_HOST и volume /var/run/docker.sock нужны, чтобы вектор мог цепляться к логам докера на хосте.
